@@ -1,5 +1,5 @@
 import argparse
-    
+
 
 def generate_diff(first,second):
     stroka = '{'
