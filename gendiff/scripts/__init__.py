@@ -7,5 +7,3 @@ file2 = json.load(open('../files/file2.json'))
 
 
 __all__ = ('generate_diff')
-
-
