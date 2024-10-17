@@ -10,8 +10,5 @@ package-install:
 publish:
 	poetry publish --dry-run
 
-run:
-	poetry run gendiff
-
 lint:
 	poetry run flake8 gendiff
