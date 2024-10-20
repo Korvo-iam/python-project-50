@@ -21,6 +21,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install poetry
+          pip install flake8
           make build
           make package-install
           make publish
