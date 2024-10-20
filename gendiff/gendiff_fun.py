@@ -14,13 +14,12 @@ def generate_diff(first, second):
     gen_list = list(set(list(file1.keys()) + list(file2.keys())))
     gen_list.sort()
     for el in gen_list:
+        if type(file1[el]) is bool:
+            file1[el] = str(file1[el])
+            print(file1[el])
         if el not in second_list:
-            if type(file1[el]) is bool:
-                file1[el] = str(file1[el]).lower()
             stroka = stroka + '\n' + f'  - {str(el)}: {file1[el]}'
         elif el not in first_list:
-            if type(file2[el]) is bool:
-                file2[el] = str(file2[el]).lower()
             stroka = stroka + '\n' + f'  + {str(el)}: {file2[el]}'
         elif file1[el] == file2[el]:
             stroka = stroka + '\n' + f'    {str(el)}: {file1[el]}'
@@ -28,4 +27,4 @@ def generate_diff(first, second):
             stroka = stroka + '\n' + f'  - {str(el)}: {file1[el]}'
             stroka = stroka + '\n' + f'  + {str(el)}: {file2[el]}'
     stroka = stroka + '\n' + '}'
-    return stroka
+    return str(stroka)
