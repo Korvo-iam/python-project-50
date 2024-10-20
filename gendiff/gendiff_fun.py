@@ -19,7 +19,8 @@ def generate_diff(first, second):
                 file1[el] = str(file1[el]).lower()
             stroka = stroka + '\n' + f'  - {str(el)}: {file1[el]}'
         elif el not in first_list_keys:
-            if type(file1[el]) is bool:
+            print(el)
+            if type(file2[el]) is bool:
                 file1[el] = str(file1[el]).lower()
             stroka = stroka + '\n' + f'  + {str(el)}: {file2[el]}'
         elif file1[el] == file2[el]:
