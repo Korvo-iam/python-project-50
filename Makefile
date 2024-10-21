@@ -4,7 +4,7 @@ install:
 build:
 	poetry build
 
-coverage:
+test-coverage:
 	poetry run pytest --cov
 
 package-install:
