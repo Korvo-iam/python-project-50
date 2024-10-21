@@ -4,6 +4,9 @@ install:
 build:
 	poetry build
 
+coverage:
+	poetry run pytest --cov
+
 package-install:
 	python3 -m pip install --user dist/*.whl
 

@@ -22,6 +22,7 @@ jobs:
         run: |
           pip install poetry
           pip install flake8
+          poetry add pytest-cov
           make build
           make package-install
           make publish
