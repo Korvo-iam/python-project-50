@@ -1,3 +1,31 @@
+
+Skip to content
+Navigation Menu
+
+    Korvo-iam
+    /
+    python-project-50
+
+Code
+Issues
+Pull requests
+Actions
+Projects
+Wiki
+Security
+Insights
+
+    Settings
+
+Python CI
+2141221024 #20
+
+Jobs
+
+Run details
+
+Workflow file for this run
+.github/workflows/my-check.yml at 2f3a2a7
 name: Python CI
 
 on:
@@ -33,12 +61,15 @@ jobs:
         run: |
           make check
           make lint
-      - name: Code Climate Coverage Action
-        uses: paambaati/codeclimate-action@v9.0.0
+      - name: Test & publish code coverage
+        uses: paambaati/codeclimate-action@v8.0.0
+        if: github.ref_name == 'main'
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+          PAAMBATI_SOURCE_PATH: src/main/python
         with:
           coverageCommand: make test-coverage
-          coverageLocations: |
-        	${{github.workspace}}/*.lcov:lcov
+          coverageLocations: ${{github.workspace}}/app/build/reports/paambati/test/paambatiTestReport.xml:paambati
           debug: true
+2141221024 · Korvo-iam/python-project-50@2f3a2a7
+
