@@ -12,9 +12,9 @@ jobs:
         # we want to test our package on several versions of Python
         python-version: [3.11]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
         # make depends on poetry
