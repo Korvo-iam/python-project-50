@@ -1,31 +1,3 @@
-
-Skip to content
-Navigation Menu
-
-    Korvo-iam
-    /
-    python-project-50
-
-Code
-Issues
-Pull requests
-Actions
-Projects
-Wiki
-Security
-Insights
-
-    Settings
-
-Python CI
-2141221024 #20
-
-Jobs
-
-Run details
-
-Workflow file for this run
-.github/workflows/my-check.yml at 2f3a2a7
 name: Python CI
 
 on:
