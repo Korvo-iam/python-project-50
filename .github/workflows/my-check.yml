@@ -12,9 +12,9 @@ jobs:
         # we want to test our package on several versions of Python
         python-version: [3.11]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
         # make depends on poetry
@@ -33,7 +33,7 @@ jobs:
           make check
           make lint
       - name: Test & publish code coverage
-        uses: paambaati/codeclimate-action@v9.0.0
+        uses: paambaati/codeclimate-action@v2.7.1
         if: github.ref_name == 'main'
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
