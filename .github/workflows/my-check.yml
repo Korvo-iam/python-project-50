@@ -35,11 +35,11 @@ jobs:
           make lint
       - name: Test & publish code coverage
         uses: paambaati/codeclimate-action@v2.7.1
-        if: github.ref_name == 'main'
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-          PAAMBATI_SOURCE_PATH: src/main/python
         with:
           coverageCommand: make test-coverage
-          coverageLocations: ${{github.workspace}}/app/build/reports/paambati/test/paambatiTestReport.xml:paambati
+          coverageLocations: |
+            ${{github.workspace}}/coverage/lcov.info:lcov
+            ${{github.workspace}}/coverage/lcov2.info:lcov
           debug: true
