@@ -43,5 +43,4 @@ jobs:
           coverageCommand: make test-coverage
           coverageLocations: ${{github.workspace}}/app/build/reports/paambati/test/paambatiTestReport.xml:paambati
           debug: true
-2141221024 · Korvo-iam/python-project-50@2f3a2a7
 
