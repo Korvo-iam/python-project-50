@@ -5,6 +5,7 @@ build:
 	poetry build
 
 test-coverage:
+	pytest --version
 	pytest --cov=.
 
 package-install:
