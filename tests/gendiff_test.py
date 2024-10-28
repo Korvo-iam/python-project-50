@@ -1,4 +1,4 @@
-from gendiff.gendiff_fun import generate_diff
+from gendiff import gendiff_fun
 
 
 file1 = 'files/file1.json'
@@ -8,7 +8,7 @@ file4 = 'files/file4.json'
 
 
 def test_generate_diff_1():
-    difference = generate_diff(file1, file1)
+    difference = gendiff_fun.generate_diff(file1, file1)
     expected = '''{
     follow: false
     host: hexlet.io
@@ -19,7 +19,7 @@ def test_generate_diff_1():
 
 
 def test_generate_diff_2():
-    difference = generate_diff(file1, file2)
+    difference = gendiff_fun.generate_diff(file1, file2)
     expected = '''{
   - follow: false
     host: hexlet.io
@@ -32,7 +32,7 @@ def test_generate_diff_2():
 
 
 def test_generate_diff_3():
-    difference = generate_diff(file1, file3)
+    difference = gendiff_fun.generate_diff(file1, file3)
     expected = '''{
   - follow: false
     host: hexlet.io
@@ -43,7 +43,7 @@ def test_generate_diff_3():
 
 
 def test_generate_diff_4():
-    difference = generate_diff(file1, file4)
+    difference = gendiff_fun.generate_diff(file1, file4)
     expected = '''{
   - follow: false
   - host: hexlet.io

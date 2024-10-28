@@ -5,7 +5,7 @@ build:
 	poetry build
 
 test-coverage:
-	coverage run -m pytest
+	pytest --cov=.
 
 package-install:
 	python3 -m pip install --user dist/*.whl

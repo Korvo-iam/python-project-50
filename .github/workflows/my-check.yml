@@ -20,14 +20,8 @@ jobs:
         # make depends on poetry
       - name: Install dependencies
         run: |
-          pip install coverage
-          pip install poetry
-          pip install flake8
-          poetry add pytest-cov
-          make build
-          make package-install
-          make publish
-          python3 -m pip install pytest
+          pip install poetry==1.8.3
+          poetry install
       - name: Run linter and pytest
         run: |
           make check
