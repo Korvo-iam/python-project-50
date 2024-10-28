@@ -18,8 +18,8 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
-          poetry lock --no-update
           pip install poetry==1.8.3
+          poetry lock --no-update
           poetry install
       - name: Run linter and pytest
         run: |
