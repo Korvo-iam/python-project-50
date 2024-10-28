@@ -5,9 +5,7 @@ build:
 	poetry build
 
 test-coverage:
-	hash -r pytest
-	pytest --version
-	pytest --cov=.
+	pytest -cov
 
 package-install:
 	python3 -m pip install --user dist/*.whl
