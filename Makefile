@@ -5,6 +5,7 @@ build:
 	poetry build
 
 test-coverage:
+	hash -r pytest
 	pytest --version
 	pytest --cov=.
 
