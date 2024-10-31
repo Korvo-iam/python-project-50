@@ -5,7 +5,7 @@ build:
 	poetry build
 
 test-coverage:
-	pytest -cov
+	poetry run pytest --cov=gendiff tests --cov-report xml
 
 package-install:
 	python3 -m pip install --user dist/*.whl
