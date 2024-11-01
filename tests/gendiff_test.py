@@ -54,6 +54,7 @@ def test_generate_diff_4():
 }'''
     assert difference == expected
 
+
 def test_generate_diff_5():
     difference = gendiff_fun.generate_diff(file3, file5)
     expected = '''{
@@ -62,6 +63,7 @@ def test_generate_diff_5():
     timeout: 50
 }'''
     assert difference == expected
+
 
 def test_generate_diff_6():
     difference = gendiff_fun.generate_diff(file1, file6)
