@@ -1,14 +1,19 @@
-import json
+import json, yaml
+
+def open_file(curfile):
+    if curfile[-5:] == ".json":
+        with open(curfile) as file:
+            file_inside = json.load(file)
+    elif curfile[-5:] == ".yaml" or curfile[-4:] == ".yml":
+        with open(curfile) as file:
+            file_inside = yaml.safe_load(file)
+    return file_inside
 
 
 def generate_diff(first, second):
-    with open(first) as file1:
-        json_inside1 = json.load(file1)
-    with open(second) as file2:
-        json_inside2 = json.load(file2)
     stroka = '{'
-    file1 = json_inside1
-    file2 = json_inside2
+    file1 = open_file(first)
+    file2 = open_file(second)
     first_list_keys = list(file1.keys())
     second_list_keys = list(file2.keys())
     gen_list = list(set(list(file1.keys()) + list(file2.keys())))
