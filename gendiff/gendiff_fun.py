@@ -1,7 +1,3 @@
-import json
-import yaml
-
-
 def open_file(curfile):
     if curfile[-5:] == ".json":
         with open(curfile) as file:
@@ -40,21 +36,10 @@ def dua(key, file1, file2):
         return{"status":status, "value":valueold}
 
 
-
-def generate_diff(first, second):
-    diff = {}
-    file1 = open_file(first)
-    file2 = open_file(second)
-    gen_list = sorted(list(set(list(file1.keys()) + list(file2.keys()))))
-    for el in gen_list:
-        diff[el] = dua(el,file1,file2)
-    return diff
-
-
 def convert(element, step = " "):
     stroka = "{"
     for el in element:
-        print(el)
+        #print(el)
         if element[el]['status'] == "untouched":
             oper = " "
             stroka += f"\n{step}{oper} {el} : {low(element[el]['value'])}"
@@ -71,3 +56,13 @@ def convert(element, step = " "):
             stroka += f"\n{step}{oper} {el} : {low(element[el]['new_value'])}"
     stroka += "\n}"
     return stroka
+
+def generate_diff(first, second):
+    diff = {}
+    file1 = open_file(first)
+    file2 = open_file(second)
+    gen_list = sorted(list(set(list(file1.keys()) + list(file2.keys()))))
+    for el in gen_list:
+        diff[el] = dua(el,file1,file2)
+    stroka_final = convert(diff)
+    return stroka_final
