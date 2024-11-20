@@ -1,3 +1,5 @@
+import json, yaml
+
 def open_file(curfile):
     if curfile[-5:] == ".json":
         with open(curfile) as file:
