@@ -12,34 +12,62 @@ def open_file(curfile):
     return file_inside
 
 
+def low(element):
+    if isinstance(element, bool):
+        element = str(element).lower()
+    elif isinstance(element, type(None)):
+        element = 'null'
+    return element
+
+
+def dua(key, file1, file2):
+    if key in file1 and key not in file2:
+        status = "removed"
+        valueold = file1[key]
+        return{"status":status, "old_value":valueold}
+    elif key not in file1 and key in file2:
+        status = "added"
+        valuenew = file2[key]
+        return{"status":status, "new_value":valuenew}
+    elif file1[key] != file2[key]:
+        status = "changed"
+        valueold = file1[key]
+        valuenew = file2[key]
+        return{"status":status, "old_value":valueold, "new_value":valuenew}
+    elif file1[key] == file2[key]:
+        status = "untouched"
+        valueold = file1[key]
+        return{"status":status, "value":valueold}
+
+
+
 def generate_diff(first, second):
-    stroka = '{'
+    diff = {}
     file1 = open_file(first)
     file2 = open_file(second)
-    first_list_keys = list(file1.keys())
-    second_list_keys = list(file2.keys())
-    gen_list = list(set(list(file1.keys()) + list(file2.keys())))
-    gen_list.sort()
+    gen_list = sorted(list(set(list(file1.keys()) + list(file2.keys()))))
     for el in gen_list:
-        if el not in second_list_keys:
-            if type(file1[el]) is bool:
-                file1[el] = str(file1[el]).lower()
-            stroka = stroka + '\n' + f'  - {str(el)}: {file1[el]}'
-        elif el not in first_list_keys:
-            print(el)
-            if type(file2[el]) is bool:
-                file2[el] = str(file2[el]).lower()
-            stroka = stroka + '\n' + f'  + {str(el)}: {file2[el]}'
-        elif file1[el] == file2[el]:
-            if type(file1[el]) is bool:
-                file1[el] = str(file1[el]).lower()
-            stroka = stroka + '\n' + f'    {str(el)}: {file1[el]}'
-        elif file1[el] != file2[el]:
-            if type(file2[el]) is bool:
-                file2[el] = str(file2[el]).lower()
-            if type(file1[el]) is bool:
-                file1[el] = str(file1[el]).lower()
-            stroka = stroka + '\n' + f'  - {str(el)}: {file1[el]}'
-            stroka = stroka + '\n' + f'  + {str(el)}: {file2[el]}'
-    stroka = stroka + '\n' + '}'
-    return str(stroka)
+        diff[el] = dua(el,file1,file2)
+    return diff
+
+
+def convert(element, step = " "):
+    stroka = "{"
+    for el in element:
+        print(el)
+        if element[el]['status'] == "untouched":
+            oper = " "
+            stroka += f"\n{step}{oper} {el} : {low(element[el]['value'])}"
+        elif element[el]['status'] == "removed":
+            oper = "-"
+            stroka += f"\n{step}{oper} {el} : {low(element[el]['old_value'])}"
+        elif element[el]['status'] == "added":
+            oper = "+"
+            stroka += f"\n{step}{oper} {el} : {low(element[el]['new_value'])}"
+        elif element[el]['status'] == "changed":
+            oper = "-"
+            stroka += f"\n{step}{oper} {el} : {low(element[el]['old_value'])}"
+            oper = "+"
+            stroka += f"\n{step}{oper} {el} : {low(element[el]['new_value'])}"
+    stroka += "\n}"
+    return stroka
