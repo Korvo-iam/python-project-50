@@ -1,4 +1,5 @@
-import json, yaml
+import json
+import yaml
 
 def open_file(curfile):
     if curfile[-5:] == ".json":
@@ -44,18 +45,18 @@ def convert(element, step = " "):
         #print(el)
         if element[el]['status'] == "untouched":
             oper = " "
-            stroka += f"\n{step}{oper} {el} : {low(element[el]['value'])}"
+            stroka += f"\n{step} {oper} {el}: {low(element[el]['value'])}"
         elif element[el]['status'] == "removed":
             oper = "-"
-            stroka += f"\n{step}{oper} {el} : {low(element[el]['old_value'])}"
+            stroka += f"\n{step} {oper} {el}: {low(element[el]['old_value'])}"
         elif element[el]['status'] == "added":
             oper = "+"
-            stroka += f"\n{step}{oper} {el} : {low(element[el]['new_value'])}"
+            stroka += f"\n{step} {oper} {el}: {low(element[el]['new_value'])}"
         elif element[el]['status'] == "changed":
             oper = "-"
-            stroka += f"\n{step}{oper} {el} : {low(element[el]['old_value'])}"
+            stroka += f"\n{step} {oper} {el}: {low(element[el]['old_value'])}"
             oper = "+"
-            stroka += f"\n{step}{oper} {el} : {low(element[el]['new_value'])}"
+            stroka += f"\n{step} {oper} {el}: {low(element[el]['new_value'])}"
     stroka += "\n}"
     return stroka
 
