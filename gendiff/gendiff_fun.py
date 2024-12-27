@@ -70,3 +70,8 @@ def generate_diff(first, second):
         diff[el] = dua(el, file1, file2)
     stroka_final = convert(diff)
     return stroka_final
+
+path1 = "file7.json"
+path2 = "file8.json"
+b = generate_diff(path1,path2)
+print(b)
