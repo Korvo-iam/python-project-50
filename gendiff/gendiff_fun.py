@@ -81,9 +81,12 @@ def check_status(key, file1, file2):
         valueold = file1[key]
         return {"status": status, "value": valueold}
 
+def rmv(dic):
+    for element in dic:
+        print(dic[element])
+        print('------')
 
-
-def convert(element, step=" "):
+def subconvert(element):
     stroka = "{"
     #print(element)
     for key in element:
@@ -99,52 +102,52 @@ def convert(element, step=" "):
             #IF UNTOUCHED
         if status == "untouched":
             oper = " "
-            stroka += f"\n{step} {oper} {key}: {low(result)}"
+            stroka += f"\n{oper} {key}: {low(result)}"
         elif status == "removed":
             #IF REMOVED
             if 'old_value' in element:
                 if check_dic(element['old_value']):
-                    value = convert(element['old_value'], step=step+step)
+                    value = subconvert(element['old_value'])
             elif 'old_value' in element[key]:
                 if check_dic(element[key]['old_value']):
-                     value = convert(element[key]['old_value'], step=step+step)
+                     value = subconvert(element[key]['old_value'])
             else: value = low(element[key]['old_value'])
             oper = "-"
-            stroka += f"\n{step} {oper} {key}: {value}"
+            stroka += f"\n{oper} {key}: {low(value)}"
             #IF ADDED
         elif status == "added":
             if 'new_value' in element:
                 if check_dic(element['new_value']):
-                    value = convert(element['new_value'], step=step+step)
+                    value = subconvert(element['new_value'])
             elif 'new_value' in element[key]:
                 if check_dic(element[key]['new_value']):
-                     value = convert(element[key]['new_value'], step=step+step)
+                     value = subconvert(element[key]['new_value'])
             else: value = low(element[key]['new_value'])
             oper = "+"
-            stroka += f"\n{step} {oper} {key}: {low(value)}"
+            stroka += f"\n{oper} {key}: {low(value)}"
             #IF CHANGED
         elif status == "changed":
             if 'old_value' in element:
                 if check_dic(element['old_value']):
-                    value = convert(element['old_value'], step=step+step)
+                    value = subconvert(element['old_value'])
             elif 'old_value' in element[key]:
                 if check_dic(element[key]['old_value']):
-                     value = convert(element[key]['old_value'], step=step+step)
+                     value = subconvert(element[key]['old_value'])
             else: value = low(element[key]['old_value'])
             oper = "-"
             result = element[key]['old_value']
-            stroka += f"\n{step} {oper} {key}: {low(result)}"
+            stroka += f"\n{oper} {key}: {low(value)}"
             if 'new_value' in element:
                 if check_dic(element['new_value']):
-                    value = convert(element['new_value'], step=step+step)
+                    value = subconvert(element['new_value'])
             elif 'new_value' in element[key]:
                 if check_dic(element[key]['new_value']):
-                     value = convert(element[key]['new_value'], step=step+step)
+                     value = subconvert(element[key]['new_value'])
             else: value = low(element[key]['new_value'])
             oper = "+"
             result = element[key]['new_value']
-            stroka += f"\n{step} {oper} {key}: {low(result)}"
-    stroka += '\n'+ step + '}'
+            stroka += f"\n{oper} {key}: {low(value)}"
+    stroka += '\n' + '}'
     return stroka
 
 
@@ -164,7 +167,11 @@ def generate_diff(first, second):
         #print(element)
         #print(diff[element])
     #print('---------------------------------------')
-    stroka_final = convert(diff)
+    #print(diff)
+    #rmv(diff)
+    #print(diff["common"]['old_value'])
+    #print(diff["common"]['new_value'])
+    stroka_final = subconvert(diff)
     return stroka_final
 
 
