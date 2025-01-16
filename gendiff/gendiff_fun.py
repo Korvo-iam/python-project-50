@@ -13,10 +13,108 @@ def open_file(curfile):
             file_inside = yaml.safe_load(file)
     return file_inside
 
+def kio(aro):
+    for key, val in aro.items():
+        print(key)
+        print(val)
+        print('------')
+
+def convert_if_d(element, newline='\n', tab='\t'):
+    if check_dic(element):
+        stroka = ''
+        skobka1='{'
+        skobka2='}'
+        print(f'element : {element}')
+        for key in element:
+            print(key)
+            val = element[key]
+            if check_dic(val):
+                print('bas')
+                val = convert_if_d(val, tab=tab+tab)
+            else :
+                
+                val = val
+            otstup = newline+tab
+            stroka += f'{otstup}{key}: {skobka1}{otstup}{val}{otstup}{skobka2}'
+        return stroka
+    else:
+        print(f'will be same : {element}')
+        print(element)
+        return element
+
+
+def convert_if_added(dictionary):
+    stroka=''
+    for key in dictionary.keys():
+        global_key = key
+        working_dic = dictionary[key]
+        status = working_dic['status']
+        if status == 'added':
+            oper = '+'
+            working_dic = working_dic['new_value']
+            stroka += f"\n{oper} {global_key}: "
+            stroka += '{'
+            for key in working_dic:
+                val = working_dic[key]
+                print(f'will be converted : {val}')
+                val = convert_if_d(val)
+                print(f'val : {val}')
+                stroka += f"\n\t{key}: {low(val)}"
+    print(stroka)
+    return stroka
+
+
+def convert_if_removed(dictionary):
+    stroka = "{"
+    for key in dictionary.keys():
+        global_key = key
+        working_dic = dictionary[key]
+        status = working_dic['status']
+        if status == 'removed':
+            oper = '-'
+            working_dic = working_dic['old_value']
+            skobka = '{'
+            stroka += f"\n{oper} {global_key}: {skobka}"
+            for key in working_dic:
+                val = working_dic[key]
+                stroka += f"\n\t{key}: {low(val)}"
+    stroka = stroka + '\n}'
+    return stroka
+
+
+
+def check_status(dic1, dic2, list1):
+    vortaro = {}
+    for key in list1:
+        if key not in dic1:
+            status = 'added'
+            old_value = None
+            new_value = dic2[key]
+        elif key not in dic2:
+            status = 'removed'
+            old_value = dic1[key]
+            new_value = None
+        elif dic1[key] != dic2[key]:
+            status = 'changed'
+            old_value = dic1[key]
+            new_value = dic2[key]
+            if check_dic(dic1[key]):
+                if check_dic(dic2[key]):
+                    sortedlist = sorted(list(set(list(dic2[key].keys()) + list(dic2[key].keys()))))
+                    old_value = check_status(dic1[key], dic2[key], sortedlist)
+                    new_value = check_status(dic2[key], dic1[key], sortedlist)
+        else:
+            status = 'untouched'
+            old_value = dic1[key]
+            new_value = None
+        value = {"status": status, "old_value": old_value, "new_value": new_value}
+        vortaro[key]=value
+    return vortaro
+
 
 def low(element):
     if check_dic(element):
-        #print(element)
+        print(element)
         if 'status' in element:
             del element['status']
     if isinstance(element, bool):
@@ -31,153 +129,44 @@ def check_dic(element):
          return True
 
 
-def kto(val, stat):
-    if isinstance(val,dict):
-        #print(val)
-        list_keys = list(val.keys())
-        for key in list_keys:
-            #print(f"-------{val[key]}")
-            check_status(key, val,{})
-            #print(f'status : {stat}')
-            #print(f'valeu : {val}')
-            if stat == 'removed':
-                value_status = 'old_value'
-            if stat == 'added':
-                value_status = 'new_value'
-            if stat == 'untouched':
-                value_status = 'value'
-    #print(f'status": {stat}, {value_status}: {val}')
-    return {"status": stat, value_status: val}
-
-
-def check_status(key, file1, file2):
-    if key in file1 and key not in file2:
-        status = "removed"
-        if check_dic(file1[key]):
-            file1[key] = kto(file1[key], status)
-        valueold = file1[key]
-        return {"status": status, "old_value": valueold}
-    elif key not in file1 and key in file2:
-        status = "added"
-        if check_dic(file2[key]):
-            file2[key] = kto(file2[key], status)
-        valuenew = file2[key]
-        return {"status": status, "new_value": valuenew}
-    elif file1[key] != file2[key]:
-        #print(key)
-        #print(f'>>>>{file1[key]}')
-        status = "changed"
-        if check_dic(file1[key]):
-            file1[key] = kto(file1[key], 'removed')
-        if check_dic(file2[key]):
-            file2[key] = kto(file2[key], 'added')
-        valueold = file1[key]
-        valuenew = file2[key]
-        return {"status": status, "old_value": valueold, "new_value": valuenew}
-    elif file1[key] == file2[key]:
-        if check_dic(file1[key]):
-            file1[key] = kto(file1[key], status)
-        status = "untouched"
-        valueold = file1[key]
-        return {"status": status, "value": valueold}
-
-def rmv(dic):
-    for element in dic:
-        print(dic[element])
-        print('------')
-
-def subconvert(element):
-    stroka = "{"
-    #print(element)
-    for key in element:
-        if key == 'status':
-            status = element[key]
-        elif check_dic(element[key]) and 'status' in element[key]:
-            status = element[key]['status']
-        else:
-            status = "untouched"
-
-        if element[key] is not dict:
-            result = element[key]
-            #IF UNTOUCHED
-        if status == "untouched":
-            oper = " "
-            stroka += f"\n{oper} {key}: {low(result)}"
-        elif status == "removed":
-            #IF REMOVED
-            if 'old_value' in element:
-                if check_dic(element['old_value']):
-                    value = subconvert(element['old_value'])
-            elif 'old_value' in element[key]:
-                if check_dic(element[key]['old_value']):
-                     value = subconvert(element[key]['old_value'])
-            else: value = low(element[key]['old_value'])
-            oper = "-"
-            stroka += f"\n{oper} {key}: {low(value)}"
-            #IF ADDED
-        elif status == "added":
-            if 'new_value' in element:
-                if check_dic(element['new_value']):
-                    value = subconvert(element['new_value'])
-            elif 'new_value' in element[key]:
-                if check_dic(element[key]['new_value']):
-                     value = subconvert(element[key]['new_value'])
-            else: value = low(element[key]['new_value'])
-            oper = "+"
-            stroka += f"\n{oper} {key}: {low(value)}"
-            #IF CHANGED
-        elif status == "changed":
-            if 'old_value' in element:
-                if check_dic(element['old_value']):
-                    value = subconvert(element['old_value'])
-            elif 'old_value' in element[key]:
-                if check_dic(element[key]['old_value']):
-                     value = subconvert(element[key]['old_value'])
-            else: value = low(element[key]['old_value'])
-            oper = "-"
-            result = element[key]['old_value']
-            stroka += f"\n{oper} {key}: {low(value)}"
-            if 'new_value' in element:
-                if check_dic(element['new_value']):
-                    value = subconvert(element['new_value'])
-            elif 'new_value' in element[key]:
-                if check_dic(element[key]['new_value']):
-                     value = subconvert(element[key]['new_value'])
-            else: value = low(element[key]['new_value'])
-            oper = "+"
-            result = element[key]['new_value']
-            stroka += f"\n{oper} {key}: {low(value)}"
-    stroka += '\n' + '}'
-    return stroka
-
-
 def generate_diff(first, second):
     diff = {}
-    if first is not dict and second is not dict:
-        file1 = open_file(first)
-        file2 = open_file(second)
-    else:
+    if first is dict:
         file1 = first
+    else:
+        file1 = open_file(first)
+    if second is dict:
         file2 = second
+    else:
+        file2 = open_file(second)
     gen_list = sorted(list(set(list(file1.keys()) + list(file2.keys()))))
-    for el in gen_list:
-        diff[el] = check_status(el, file1, file2)
-    for element in diff:
-        pass
+    #print(check_status(file1,file2,gen_list))
+    #print(diff)
+    diff = check_status(file1,file2,gen_list)
+    #print('----------------------')
+    #print(diff)
+    #print(diff.items())
+    for key,val in diff.items():
+        print(key)
+        print(val)
+    
+    #print(diff.keys())
+    stroka = '{'
+    stroka = stroka + convert_if_added(diff)
+    stroka = stroka + convert_if_removed(diff)
+    #print('stroka :')
+    #print(stroka)
         #print(element)
         #print(diff[element])
     #print('---------------------------------------')
-    #print(diff)
-    #rmv(diff)
-    #print(diff["common"]['old_value'])
-    #print(diff["common"]['new_value'])
-    stroka_final = subconvert(diff)
-    return stroka_final
+    #stroka_final = convert(diff)
+    #return stroka_final
+    return stroka
 
 
 path1 = "file7.json"
 path2 = "file8.json"
 b = generate_diff(path1,path2)
-#print('-------------------\n')
+print('-------------------\n')
 print(b)
-#print('\n-------------------')
+print('\n-------------------')
