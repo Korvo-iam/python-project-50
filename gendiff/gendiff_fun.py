@@ -13,11 +13,6 @@ def open_file(curfile):
             file_inside = yaml.safe_load(file)
     return file_inside
 
-def kio(aro):
-    for key, val in aro.items():
-        print(key)
-        print(val)
-        print('------')
 
 def convert_if_d(element, newline='\n', tab='\t'):
     if check_dic(element):
@@ -82,39 +77,175 @@ def convert_if_removed(dictionary):
     return stroka
 
 
+def check_status(dic1, dic2, deepnees=0):
+    list1 = sorted(list(set(list(dic1.keys()) + list(dic2.keys()))))
+    print(f'lilililililililililililili\n{list1}\nlilililililililililililili')
+    dictionary = {}
+    children = []
+    children_main = []
+    if deepnees == 0:
+        status = 'root'
+        key = 'root'
+        children_main.append(check_status(dic1,dic2, deepnees=deepnees+1))
+        value = {"status": status, "children": children_main}
+        dictionary[key]=value
+        return dictionary
+    else:
+        for key in list1:
+            if key in dic1 and check_dic(dic1[key]) or key in dic2 and check_dic(dic2[key]):
+                if key in dic1 and key not in dic2:
+                    status = 'removed'
+                    value = {'status':status, 'old_value':dic1[key], 'new_value':{}}
+                elif key in dic2 and key not in dic1:
+                    status = 'added'
+                    value = {'status':status, 'old_value':{}, 'new_value':dic2[key]}
+                else :
+                    status='nested'
+                    if key in dic1 and check_dic(dic1[key]):
+                        if key in dic2 and check_dic(dic2[key]):
+                            children.append(check_status(dic1[key], dic2[key], deepnees = deepnees + 1))
+                        else:
+                            children.append(check_status(dic1[key], {}, deepnees = deepnees + 1))
+                    elif key not in dic1:
+                        if key in dic2 and check_dic(dic2[key]):
+                            children.append(check_status({}, dic2[key], deepnees = deepnees + 1))
+                    value = {'status':status,'children':children}
+                dictionary[key]=value
+                children=[]
+            else:
+                if key not in dic1:
+                    status = 'added'
+                    old_value = None
+                    new_value = dic2[key]
+                elif key not in dic2:
+                    status = 'removed'
+                    old_value = dic1[key]
+                    new_value = None
+                elif dic1[key] != dic2[key]:
+                    status = 'changed'
+                    old_value = dic1[key]
+                    new_value = dic2[key]
+                    if check_dic(dic1[key]):
+                        if check_dic(dic2[key]):
+                            old_value = check_status(dic1[key], dic2[key], deepnees=deepnees+1)
+                            new_value = check_status(dic2[key], dic1[key], deepnees=deepnees+1)
+                else:
+                    status = 'untouched'
+                    old_value = dic1[key]
+                    new_value = None
+                value = {"status": status, "old_value": old_value, "new_value": new_value}
+                dictionary[key]=value
+    return dictionary
 
-def check_status(dic1, dic2, list1):
-    vortaro = {}
-    for key in list1:
-        if key not in dic1:
-            status = 'added'
-            old_value = None
-            new_value = dic2[key]
-        elif key not in dic2:
-            status = 'removed'
-            old_value = dic1[key]
-            new_value = None
-        elif dic1[key] != dic2[key]:
-            status = 'changed'
-            old_value = dic1[key]
-            new_value = dic2[key]
-            if check_dic(dic1[key]):
-                if check_dic(dic2[key]):
-                    sortedlist = sorted(list(set(list(dic2[key].keys()) + list(dic2[key].keys()))))
-                    old_value = check_status(dic1[key], dic2[key], sortedlist)
-                    new_value = check_status(dic2[key], dic1[key], sortedlist)
-        else:
-            status = 'untouched'
-            old_value = dic1[key]
-            new_value = None
-        value = {"status": status, "old_value": old_value, "new_value": new_value}
-        vortaro[key]=value
-    return vortaro
+
+def check_status_2(dic1, dic2, deepnees=0):
+    list1 = sorted(list(set(list(dic1.keys()) + list(dic2.keys()))))
+    #print(f'lilililililililililililili\n{list1}\nlilililililililililililili')
+    dictionary = {}
+    children = []
+    children_main = []
+    if deepnees == 0:
+        status = 'root'
+        key = 'root'
+        children_main.append(check_status(dic1,dic2, deepnees=deepnees+1))
+        value = {"status": status, "children": children_main}
+        dictionary[key]=value
+        return dictionary
+    else:
+        for key in list1:
+            if key in dic1 and check_dic(dic1[key]) or key in dic2 and check_dic(dic2[key]):
+                status='nested'
+                if key in dic1 and check_dic(dic1[key]):
+                    if key in dic2 and check_dic(dic2[key]):
+                        children.append(check_status(dic1[key], dic2[key], deepnees = deepnees + 1))
+                    else:
+                        children.append(check_status(dic1[key], {}, deepnees = deepnees + 1))
+                elif key not in dic1:
+                    if key in dic2 and check_dic(dic2[key]):
+                        children.append(check_status({}, dic2[key], deepnees = deepnees + 1))
+                value = {'status':status,'children':children}
+                dictionary[key]=value
+                children=[]
+            else:
+                if key not in dic1:
+                    status = 'added'
+                    old_value = None
+                    new_value = dic2[key]
+                elif key not in dic2:
+                    status = 'removed'
+                    old_value = dic1[key]
+                    new_value = None
+                elif dic1[key] != dic2[key]:
+                    status = 'changed'
+                    old_value = dic1[key]
+                    new_value = dic2[key]
+                    if check_dic(dic1[key]):
+                        if check_dic(dic2[key]):
+                            old_value = check_status(dic1[key], dic2[key], deepnees=deepnees+1)
+                            new_value = check_status(dic2[key], dic1[key], deepnees=deepnees+1)
+                else:
+                    status = 'untouched'
+                    old_value = dic1[key]
+                    new_value = None
+                value = {"status": status, "old_value": old_value, "new_value": new_value}
+                dictionary[key]=value
+    return dictionary
+
+def n_convert(dict_inside, tab=' '):
+    stroka = ''
+    a = ''
+    oper_plus = '+'
+    oper_minus = '-'
+    skobka2 = ''
+    skobka1 = ''
+    oper = ''
+    inside = ''
+    new_str='\n'
+    dict_inside=dict_inside['children']
+    print(dict_inside)
+    for elem in list(dict_inside):
+        for key in elem :
+            a = a + key
+            new_string = f'{new_str}{tab}{oper}{key}: {skobka1}{inside}{tab}{skobka2}\n'
+            val = elem[key]
+            if_dic = False
+            if check_dic(val):
+                if_dic = True
+            if 'children' in val:
+                skobka1 = '{'
+                skobka2 = '}'
+            status = val['status']
+            if status == 'nested':
+                #print('was nested')
+                #print(key)
+                inside = n_convert(val, tab=tab+tab)
+                skobka1 = '{'
+                skobka2 = '}'
+            elif status == 'added' and check_dic(val):
+                new_val = val['new_value']
+                oper = oper_plus
+                inside = new_val
+            elif status == 'removed':
+                oper = oper_minus
+                old_val = val['old_value']
+                inside = old_val
+            elif status == 'changed':
+                new_val = val['new_value']
+                old_val = val['old_value']
+                new_string = f'{tab}{oper_minus}{key}: {old_val}\n{tab}{oper_plus}: {key}{new_val}'
+                #print('\n//////////////////////////////')
+                #print(f'inside of changed : \n{tab}{inside}')
+                #print('\n//////////////////////////////')
+            #print(f'key : {key}')
+            #print(f'val : {val}')
+            stroka = stroka + new_string
+    #print(f'-------------------------------\n{stroka}')
+    return stroka
 
 
 def low(element):
     if check_dic(element):
-        print(element)
+        #print(element)
         if 'status' in element:
             del element['status']
     if isinstance(element, bool):
@@ -125,8 +256,7 @@ def low(element):
 
 
 def check_dic(element):
-     if isinstance(element, dict):
-         return True
+    return isinstance(element, dict)
 
 
 def generate_diff(first, second):
@@ -139,34 +269,26 @@ def generate_diff(first, second):
         file2 = second
     else:
         file2 = open_file(second)
-    gen_list = sorted(list(set(list(file1.keys()) + list(file2.keys()))))
-    #print(check_status(file1,file2,gen_list))
+    diff = check_status(file1,file2)
+    #print('-------------------------------------------')
     #print(diff)
-    diff = check_status(file1,file2,gen_list)
     #print('----------------------')
+    #print('\n')
     #print(diff)
-    #print(diff.items())
-    for key,val in diff.items():
-        print(key)
-        print(val)
-    
-    #print(diff.keys())
-    stroka = '{'
-    stroka = stroka + convert_if_added(diff)
-    stroka = stroka + convert_if_removed(diff)
-    #print('stroka :')
-    #print(stroka)
-        #print(element)
-        #print(diff[element])
-    #print('---------------------------------------')
-    #stroka_final = convert(diff)
-    #return stroka_final
-    return stroka
+    #print('\n')
+    fin_string = '{'
+    diff_inside = diff['root']
+    #print(type(diff_inside))
+    n_convert(diff_inside)
+    return fin_string
 
 
 path1 = "file7.json"
 path2 = "file8.json"
 b = generate_diff(path1,path2)
-print('-------------------\n')
-print(b)
-print('\n-------------------')
+
+
+
+#print('-------------------\n')
+#print(b)
+#print('\n-------------------')
