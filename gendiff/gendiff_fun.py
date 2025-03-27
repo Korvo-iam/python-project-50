@@ -14,15 +14,33 @@ def open_file(curfile):
     return file_inside
 
 def set_recursive_untouched(dict):
+    dictionary = {}
+    status = 'untouched'
+    children = []
     if check_if_dic(dict):
-        new_dic = {}
+        #print(f'didididididididididididididididid : {dict}')
         for key in dict:
             val = dict[key]
+            #print(f'vavavavavavavvavavavavava : {val}')
             if check_if_dic(val):
-                val = set_recursive_untouched(val)
+                status = 'nested'
+                children.append(set_recursive_untouched(val))
+                value = {'status':status,'children':children}
+                dictionary[key]=value
             else:
-                dict['status'] = 'untouched'
-    return dict
+                status = 'untouched'
+                old_value = dict[key]
+                new_value = None
+                value = {"status": status, "old_value": old_value, "new_value": new_value}
+                dictionary[key]=value
+        
+            #children.append(set_recursive_untouched(val))
+    #print(f'>>>z{dictionary}\n')
+    #print(f'>>>x{children}\n')
+    dictionary[key]=value
+    children=[]
+    #print(f'DICTIONARY : {dictionary}')
+    return dictionary
 
 def set_status(dic1, dic2, deepnees=0):
     list1 = sorted(list(set(list(dic1.keys()) + list(dic2.keys()))))
@@ -40,13 +58,27 @@ def set_status(dic1, dic2, deepnees=0):
         for key in list1:
             if key in dic1 and check_if_dic(dic1[key]) or key in dic2 and check_if_dic(dic2[key]):#если ключ в словаре1 и его значение - словарь, или если ключ в словаре2 и его значение - словарь
                 if key in dic1 and key not in dic2:#если ключ в словаре1, но не в словаре2
-                    status = 'removed'
-                    value = {'status':status, 'old_value':dic1[key], 'new_value':{}}
+                    status = 'removed_dic'
+                    val = set_recursive_untouched(dic1[key])
+                    #val = dic1[key]
+                    children.append(set_recursive_untouched(dic1[key]))
+                    value = {'status':status,'children':children}
+                    #print(f'>>>xDFGHJKL:{value}\n')
                 elif key in dic2 and key not in dic1:#если ключ в словаре2, но не словаре1
-                    status = 'added'
-                    #val = set_recursive_untouched(dic2[key])
-                    val = dic2[key]
-                    value = {'status':status, 'old_value':{}, 'new_value':val}
+                    status = 'added_dic'
+                    val = set_recursive_untouched(dic2[key])
+                    #val = dic2[key]
+                    children.append(set_recursive_untouched(dic2[key]))
+                    value = {'status':status,'children':children}
+                    #print(f'>>>xDFGHJKL:{value}\n')
+                #elif key in dic1 and key in dic2 and dic1[key] != dic2[key]:
+                #    status = 'changed'
+                #    if check_if_dic(dic1[key]):
+                #        children.append(set_recursive_untouched(dic1[key]))
+                #        value = {'status':status,'children':children}
+                #    if check_if_dic(dic2[key]):
+                #        children.append(set_recursive_untouched(dic2[key]))
+                #        value = {'status':status,'children':children}
                 elif key in dic1 and key in dic2 and not check_if_dic(dic1[key]) or not check_if_dic(dic2[key]):#если ключ в словаре1 и словаре2, где 1 из случаев - его значение - не словарь
                     status = 'changed'
                     value = {'status':status, 'old_value':dic1[key], 'new_value':dic2[key]}
@@ -86,27 +118,12 @@ def set_status(dic1, dic2, deepnees=0):
                     new_value = None
                 value = {"status": status, "old_value": old_value, "new_value": new_value}
                 dictionary[key]=value
+
+    #print(f'DICTIONARY : {dictionary}')
     return dictionary
-
-def make_dic_structure(dict, skobka1, skobka2, tab=' '):
-    inside = ''
-    skobka1 ='{'
-    skobka2 = '}'
-    tab = tab + '  '
-    if check_if_dic(dict):
-        for key in dict:
-            print(f'keyekeyeyeyeyeyeyeyyyeyyeyeyeyeye : {key}')
-            val = dict[key]
-            if check_if_dic(val):
-                val = make_dic_structure(val, skobka1=skobka1, skobka2=skobka2, tab=tab+tab)
-            newstring = f'{skobka1}\n{tab+ "   "}{key}: {val}\n{tab}{skobka2}'
-        inside = inside + newstring
-    return inside
-
 
 
 def n_convert(dict_inside, tab=' '):
-    print(f'>>>>\n{dict_inside}\n<<<<<<<<')
     stroka = ''
     a = ''
     oper_plus = '+ '
@@ -117,14 +134,15 @@ def n_convert(dict_inside, tab=' '):
     oper = ''
     inside = ''
     dict_inside = dict_inside['children']
+    #print(f'>>>>>>>>>>>>>>>>\n{dict_inside}\n<<<<<<<<<<<<<<<<<<<')
     for elem in list(dict_inside):
+        #print(f'>>>>\n{dict_inside}\n<<<<<<<<')
         for key in elem:
+            #print(key)
+            #print(key)
             a = a + key
             new_string = ''
             val = elem[key]
-            if_dic = False
-            if check_if_dic(val):
-                if_dic = True
             if 'children' in val:
                 skobka1 = '{'
                 skobka2 = '}'
@@ -139,6 +157,18 @@ def n_convert(dict_inside, tab=' '):
                 new_string = f'{tab}{oper}{key}: {inside}\n'
             elif status == 'nested':
                 oper = oper_neutral
+                inside = n_convert(val, tab=tab + '  ')
+                skobka1 = '{'
+                skobka2 = '}'
+                new_string = f'{tab}{oper}{key}: {skobka1}\n{inside}{tab}{skobka2}\n'
+            elif status == 'added_dic':
+                oper = oper_plus
+                inside = n_convert(val, tab=tab + '  ')
+                skobka1 = '{'
+                skobka2 = '}'
+                new_string = f'{tab}{oper}{key}: {skobka1}\n{inside}{tab}{skobka2}\n'
+            elif status == 'removed_dic':
+                oper = oper_minus
                 inside = n_convert(val, tab=tab + '  ')
                 skobka1 = '{'
                 skobka2 = '}'
@@ -158,19 +188,19 @@ def n_convert(dict_inside, tab=' '):
                     inside = "null"
                 else:
                     inside = str(old_val)
-                    print(f'>>>{inside}')
+                    #print(f'>>>{inside}')
                 new_string = f'{tab}{oper}{key}: {inside}\n'
             elif status == 'changed':
                 new_val = val['new_value']
                 old_val = val['old_value']
                 new_string = f'{tab}{oper_minus}{key}: {old_val}\n{tab}{oper_plus}{key}: {new_val}\n'
             stroka = stroka + new_string
-    print('***')
+    #print('***')
     #print(stroka)
     return stroka
 
 
-def low(element):
+def format_value(element):
     if check_if_dic(element):
         #print(element)
         if 'status' in element:
@@ -198,9 +228,10 @@ def generate_diff(first, second):
         file2 = open_file(second)
     diff = set_status(file1,file2)
     diff_inside = diff['root']
+    print(f'>>>\n{diff_inside}\n<<<')
     fin_string = '{\n'
     #print(type(diff_inside))
-    fin_string += n_convert(diff_inside) + '\n}'
+    fin_string += n_convert(diff_inside) + '}'
     return fin_string
 
 
