@@ -115,7 +115,7 @@ def set_status(dic1, dic2, deepnees=0):
     return dictionary
 
 
-def n_convert(dict_inside, tab='  '):
+def convert(dict_inside, tab='  '):
     stroka = ''
     a = ''
     oper_plus = '+ '
@@ -142,25 +142,25 @@ def n_convert(dict_inside, tab='  '):
                 new_string = f'{tab}{oper}{key}: {inside}\n'
             elif status == 'nested':
                 oper = oper_neutral
-                inside = n_convert(val, tab=tab + '    ')
+                inside = convert(val, tab=tab + '    ')
                 skobka1 = '{'
                 skobka2 = '}'
                 new_string = f'{tab}{oper}{key}: {skobka1}\n{inside}{tab}  {skobka2}\n'
             elif status == 'added_dic':
                 oper = oper_plus
-                inside = n_convert(val, tab=tab + '    ')
+                inside = convert(val, tab=tab + '    ')
                 skobka1 = '{'
                 skobka2 = '}'
                 new_string = f'{tab}{oper}{key}: {skobka1}\n{inside}{tab}  {skobka2}\n'
             elif status == 'removed_dic':
                 oper = oper_minus
-                inside = n_convert(val, tab=tab + '    ')
+                inside = convert(val, tab=tab + '    ')
                 skobka1 = '{'
                 skobka2 = '}'
                 new_string = f'{tab}{oper}{key}: {skobka1}\n{inside}{tab}  {skobka2}\n'
             elif status == 'untouched_dic':
                 oper = oper_neutral
-                inside = n_convert(val, tab=tab + '    ')
+                inside = convert(val, tab=tab + '    ')
                 skobka1 = '{'
                 skobka2 = '}'
                 new_string = f'{tab}{oper}{key}: {skobka1}\n{inside}{tab}  {skobka2}\n'
@@ -178,14 +178,14 @@ def n_convert(dict_inside, tab='  '):
                 new_val = val['new_value']
                 old_val = val['old_value']
                 if check_if_dic(old_val):
-                    old_val = n_convert(old_val, tab=tab + '    ')
+                    old_val = convert(old_val, tab=tab + '    ')
                     skobka1 = '{'
                     skobka2 = '}'
                     old_val = f'{skobka1}\n{old_val}{tab}  {skobka2}'
                 else:  # если статус был changed, и value это не словарь, будет проверка на bool, None, и форматирование
                     old_val = format_value(old_val)
                 if check_if_dic(new_val):
-                    new_val = n_convert(new_val, tab=tab + '    ')
+                    new_val = convert(new_val, tab=tab + '    ')
                     skobka1 = '{'
                     skobka2 = '}'
                     new_val = f'{skobka1}\n{new_val}{tab}  {skobka2}'
@@ -210,7 +210,7 @@ def check_if_dic(element):
     return isinstance(element, dict)
 
 
-def generate_diff(first, second):
+def generate_diff(first, second, format_name='stylish'):
     diff = {}
     if first is dict:
         file1 = first
@@ -222,6 +222,7 @@ def generate_diff(first, second):
         file2 = open_file(second)
     diff = set_status(file1, file2)
     diff_inside = diff['root']
-    fin_string = '{\n'
-    fin_string += n_convert(diff_inside) + '}'
+    if format_name == 'stylish':
+        fin_string = '{\n'
+        fin_string += convert(diff_inside) + '}'
     return fin_string
