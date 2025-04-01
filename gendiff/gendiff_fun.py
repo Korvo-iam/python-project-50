@@ -33,7 +33,7 @@ def set_recursive_untouched(dict):
                 new_value = None
                 value = {"status": status, "old_value": old_value, "new_value": new_value}
                 dictionary[key] = value
-    dictionary[key] = value
+        dictionary[key] = value
     children = []
     return dictionary
 
@@ -115,9 +115,8 @@ def set_status(dic1, dic2, deepnees=0):
     return dictionary
 
 
-def convert(dict_inside, tab='  '):
+def stylish_convert(dict_inside, tab='  '):
     stroka = ''
-    a = ''
     oper_plus = '+ '
     oper_minus = '- '
     oper_neutral = '  '
@@ -128,7 +127,6 @@ def convert(dict_inside, tab='  '):
     dict_inside = dict_inside['children']
     for elem in list(dict_inside):
         for key in elem:
-            a = a + key
             new_string = ''
             val = elem[key]
             if 'children' in val:
@@ -142,25 +140,25 @@ def convert(dict_inside, tab='  '):
                 new_string = f'{tab}{oper}{key}: {inside}\n'
             elif status == 'nested':
                 oper = oper_neutral
-                inside = convert(val, tab=tab + '    ')
+                inside = stylish_convert(val, tab=tab + '    ')
                 skobka1 = '{'
                 skobka2 = '}'
                 new_string = f'{tab}{oper}{key}: {skobka1}\n{inside}{tab}  {skobka2}\n'
             elif status == 'added_dic':
                 oper = oper_plus
-                inside = convert(val, tab=tab + '    ')
+                inside = stylish_convert(val, tab=tab + '    ')
                 skobka1 = '{'
                 skobka2 = '}'
                 new_string = f'{tab}{oper}{key}: {skobka1}\n{inside}{tab}  {skobka2}\n'
             elif status == 'removed_dic':
                 oper = oper_minus
-                inside = convert(val, tab=tab + '    ')
+                inside = stylish_convert(val, tab=tab + '    ')
                 skobka1 = '{'
                 skobka2 = '}'
                 new_string = f'{tab}{oper}{key}: {skobka1}\n{inside}{tab}  {skobka2}\n'
             elif status == 'untouched_dic':
                 oper = oper_neutral
-                inside = convert(val, tab=tab + '    ')
+                inside = stylish_convert(val, tab=tab + '    ')
                 skobka1 = '{'
                 skobka2 = '}'
                 new_string = f'{tab}{oper}{key}: {skobka1}\n{inside}{tab}  {skobka2}\n'
@@ -178,20 +176,75 @@ def convert(dict_inside, tab='  '):
                 new_val = val['new_value']
                 old_val = val['old_value']
                 if check_if_dic(old_val):
-                    old_val = convert(old_val, tab=tab + '    ')
+                    old_val = stylish_convert(old_val, tab=tab + '    ')
                     skobka1 = '{'
                     skobka2 = '}'
                     old_val = f'{skobka1}\n{old_val}{tab}  {skobka2}'
                 else:  # если статус был changed, и value это не словарь, будет проверка на bool, None, и форматирование
                     old_val = format_value(old_val)
                 if check_if_dic(new_val):
-                    new_val = convert(new_val, tab=tab + '    ')
+                    new_val = stylish_convert(new_val, tab=tab + '    ')
                     skobka1 = '{'
                     skobka2 = '}'
                     new_val = f'{skobka1}\n{new_val}{tab}  {skobka2}'
                 else:
                     new_val = format_value(new_val)
                 new_string = f'{tab}{oper_minus}{key}: {old_val}\n{tab}{oper_plus}{key}: {new_val}\n'
+            stroka = stroka + new_string
+    return stroka
+
+
+def plain_convert(dict_inside, path=''):
+    def set_apostrophes(element):
+        four_horsemen = ['true', 'false', 'null', '[complex value]']
+        if element in four_horsemen:
+            element = element
+        else:
+            element = "'" + str(element) + "'"
+        return element
+    stroka = ''
+    inside = ''
+    if path != '':
+        dot = '.'
+    else:
+        dot = ''
+    dict_inside = dict_inside['children']
+    for elem in list(dict_inside):
+        for key in elem:
+            new_string = ''
+            val = elem[key]
+            status = val['status'] 
+            current_path = path + dot + key
+            if status == 'nested':
+                inside = plain_convert(val, current_path)
+                new_string = f'{inside}'
+            elif status == 'added_dic':
+                inside = '[complex value]'
+                new_string = f"Property '{current_path}' was added with value: {inside}\n"
+            elif status == 'removed_dic':
+                inside = '[complex value]'
+                new_string = f"Property '{current_path}' was removed\n"
+            elif status == 'removed':
+                new_string = f"Property '{current_path}' was removed\n"
+            elif status == 'added':
+                new_val = val['new_value']
+                inside = format_value(new_val)
+                inside = set_apostrophes(inside)
+                new_string = f"Property '{current_path}' was added with value: {inside}\n"
+            elif status == 'changed':
+                new_val = val['new_value']
+                old_val = val['old_value']
+                if check_if_dic(old_val):
+                    old_val = '[complex value]'
+                else:
+                    old_val = format_value(old_val)
+                if check_if_dic(new_val):
+                    new_val = '[complex value]'
+                else:
+                    new_val = format_value(new_val)
+                old_val = set_apostrophes(old_val)
+                new_val = set_apostrophes(new_val)
+                new_string = f"Property '{current_path}' was updated. From {old_val} to {new_val}\n"
             stroka = stroka + new_string
     return stroka
 
@@ -224,5 +277,9 @@ def generate_diff(first, second, format_name='stylish'):
     diff_inside = diff['root']
     if format_name == 'stylish':
         fin_string = '{\n'
-        fin_string += convert(diff_inside) + '}'
+        fin_string += stylish_convert(diff_inside) + '}'
+    elif format_name == 'plain':
+        fin_string = ''
+        fin_string += plain_convert(diff_inside)
+        fin_string = fin_string[:-1]
     return fin_string
