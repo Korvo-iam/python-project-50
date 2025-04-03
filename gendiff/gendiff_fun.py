@@ -38,4 +38,6 @@ def generate_diff(first, second, format_name='stylish'):
         fin_string += stylish_convert(diff_inside) + '}'
     return fin_string
 
+print(generate_diff('files/file1.json', 'files/file2.json', 'plain'))
+
 print(inspect.signature(generate_diff))
