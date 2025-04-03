@@ -1,4 +1,5 @@
 from gendiff import gendiff_fun
+import inspect
 
 
 file1 = 'files/file1.json'

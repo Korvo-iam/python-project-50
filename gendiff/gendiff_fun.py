@@ -1,6 +1,7 @@
-import json
-import yaml
-from codes_to_import import set_status, plain_convert, stylish_convert
+import json, yaml, inspect
+from codes_to_import.set_status import set_status
+from codes_to_import.plain_convert import plain_convert
+from codes_to_import.stylish_convert import stylish_convert
 
 
 def open_file(curfile):
@@ -26,18 +27,15 @@ def generate_diff(first, second, format_name='stylish'):
         file2 = second
     else:
         file2 = open_file(second)
-    diff = set_status.set_status(file1, file2)
+    diff = set_status(file1, file2)
     diff_inside = diff['root']
-    if format_name == 'stylish':
-        fin_string = '{\n'
-        fin_string += stylish_convert.stylish_convert(diff_inside) + '}'
-    elif format_name == 'plain':
+    if format_name == 'plain':
         fin_string = ''
-        fin_string += plain_convert.plain_convert(diff_inside)
+        fin_string += plain_convert(diff_inside)
         fin_string = fin_string[:-1]
+    else:
+        fin_string = '{\n'
+        fin_string += stylish_convert(diff_inside) + '}'
     return fin_string
 
-a='files/file1.json'
-b='files/file2.json'
-c = generate_diff(a,b)
-print(c)
+print(inspect.signature(generate_diff))
