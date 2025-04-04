@@ -17,7 +17,7 @@ def open_file(curfile):
     return file_inside
 
 
-def generate_diff(first, second, format_name):
+def generate_diff(first, second, format_name='stylish'):
     diff = {}
     if first is dict:
         file1 = first
