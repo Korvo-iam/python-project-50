@@ -1,4 +1,5 @@
-import json, yaml
+import json
+import yaml
 from gendiff.codes_to_import.set_status import set_status
 from gendiff.codes_to_import.plain_convert import plain_convert
 from gendiff.codes_to_import.stylish_convert import stylish_convert
