@@ -34,7 +34,7 @@ def generate_diff(first, second, format_name='stylish'):
         fin_string = ''
         fin_string += plain_convert(diff_inside)
         fin_string = fin_string[:-1]
-    else:
+    elif format_name == 'stylish':
         fin_string = '{\n'
         fin_string += stylish_convert(diff_inside) + '}'
     return fin_string
