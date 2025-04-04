@@ -1,7 +1,7 @@
-import json, yaml, inspect
-from codes_to_import.set_status import set_status
-from codes_to_import.plain_convert import plain_convert
-from codes_to_import.stylish_convert import stylish_convert
+import json, yaml
+from gendiff.codes_to_import.set_status import set_status
+from gendiff.codes_to_import.plain_convert import plain_convert
+from gendiff.codes_to_import.stylish_convert import stylish_convert
 
 
 def open_file(curfile):
@@ -17,7 +17,7 @@ def open_file(curfile):
     return file_inside
 
 
-def generate_diff(first, second, format_name='stylish'):
+def generate_diff(first, second, format_name):
     diff = {}
     if first is dict:
         file1 = first
@@ -37,7 +37,3 @@ def generate_diff(first, second, format_name='stylish'):
         fin_string = '{\n'
         fin_string += stylish_convert(diff_inside) + '}'
     return fin_string
-
-print(generate_diff('files/file1.json', 'files/file2.json', 'plain'))
-
-print(inspect.signature(generate_diff))
