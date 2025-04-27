@@ -10,3 +10,19 @@ def format_value(element):
 
 def check_if_dic(element):
     return isinstance(element, dict)
+
+
+def transform_var_json(element):
+    four_horseman = ['true','null','false']
+    element = format_value(element)
+    if isinstance(element, str):
+        if len(element) > 0:
+            if element.endswith('"') and element.startswith('"') or element.endswith("'") and element.startswith("'") or element in four_horseman:
+                element = element    
+            else:
+                element = f'"{element}"'
+        elif len(element) < 1:
+            element = f'"{element}"'
+        else : 
+            element = element
+    return element
