@@ -13,7 +13,7 @@ def check_if_dic(element):
 
 
 def transform_var_json(element):
-    four_horseman = ['true','null','false']
+    four_horseman = ['true', 'null', 'false']
     element = format_value(element)
     if isinstance(element, str):
         if len(element) > 0:
@@ -23,6 +23,6 @@ def transform_var_json(element):
                 element = f'"{element}"'
         elif len(element) < 1:
             element = f'"{element}"'
-        else : 
+        else: 
             element = element
     return element
