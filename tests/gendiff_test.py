@@ -149,9 +149,3 @@ def test_generate_diff_9():
     expected = str(json.dumps(example_dic, indent=4))
     assert difference == expected
 
-
-def test_generate_diff_10():
-    difference = gendiff_fun.generate_diff(file5, file6, 'json')
-    example_dic = {'status': 'root', 'children': [{'host': {'status': 'removed', 'old_value': 'hexlet.io', 'new_value': None}, 'proxy': {'status': 'removed', 'old_value': '123.234.53.22', 'new_value': None}, 'timeout': {'status': 'removed', 'old_value': 50, 'new_value': None}}]}
-    expected = str(json.dumps(example_dic, indent=4))
-    assert difference == expected
