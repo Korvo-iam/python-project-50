@@ -32,6 +32,7 @@ def generate_diff(first, second, format_name='stylish'):
         file2 = open_file(second)
     diff = set_status(file1, file2)
     diff_inside = diff['root']
+    fin_string = ''
     if format_name == 'plain':
         fin_string = ''
         fin_string += plain_convert(diff_inside)
@@ -40,6 +41,12 @@ def generate_diff(first, second, format_name='stylish'):
         fin_string = '{\n'
         fin_string += stylish_convert(diff_inside) + '}'
     elif format_name == 'json':
-        print(diff_inside)
+        #print(diff_inside)
         fin_string = json.dumps(diff_inside, indent=4)
+    #print(fin_string)
     return fin_string
+
+#a = 'files/file7.json'
+#b = 'files/file8.json'
+#generate_diff(a,b)
+#print(generate_diff(a,b))
