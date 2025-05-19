@@ -43,4 +43,10 @@ def generate_diff(first, second, format_name='stylish'):
         fin_string += stylish_convert(diff_inside) + '}'
     elif format_name == 'json':
         fin_string = str(json.dumps(diff_inside, indent=4))
+        #print(fin_string)
     return fin_string
+
+#a = 'files/file7.json'
+
+#b = 'files/file8.json'
+#generate_diff(a,b,'json')
