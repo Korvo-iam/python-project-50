@@ -10,6 +10,9 @@ test-coverage:
 package-install:
 	python3 -m pip install --user dist/*.whl
 
+package-install-venv:
+	python3 -m pip install dist/*.whl
+
 publish:
 	poetry publish --dry-run
 
