@@ -5,7 +5,6 @@ import yaml
 from gendiff.codes_to_import.set_status import set_status
 from gendiff.codes_to_import.plain_convert import plain_convert
 from gendiff.codes_to_import.stylish_convert import stylish_convert
-#from gendiff.codes_to_import.json_convert import json_convert
 
 
 def open_file(curfile):
@@ -43,10 +42,4 @@ def generate_diff(first, second, format_name='stylish'):
         fin_string += stylish_convert(diff_inside) + '}'
     elif format_name == 'json':
         fin_string = str(json.dumps(diff_inside, indent=4))
-        #print(fin_string)
     return fin_string
-
-#a = 'files/file7.json'
-
-#b = 'files/file8.json'
-#generate_diff(a,b,'json')
