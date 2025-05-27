@@ -1,4 +1,4 @@
-from .format_value import check_if_dic
+from ..formatters.format_value import check_if_dic
 
 
 def set_recursive(dict):
