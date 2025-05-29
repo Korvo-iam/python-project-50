@@ -7,29 +7,34 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.11]
+
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python ${{ matrix.python-version }}
+
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install dependencies
+          python-version: '3.11'
+
+      - name: Install uv
         run: |
-          pip install poetry==1.8.3
-          poetry lock --no-update
-          poetry install
-      - name: Run linter and pytest
+          curl -Ls https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Install dependencies with uv
+        run: uv pip install -r requirements.txt
+
+      - name: Run checks
         run: |
-          make check
           make lint
+          make check
+
       - name: Test & publish code coverage
-        uses: paambaati/codeclimate-action@v9.0.0
         if: github.ref_name == 'main'
+        uses: paambaati/codeclimate-action@v9.0.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
           coverageCommand: make test-coverage
           debug: true
+
