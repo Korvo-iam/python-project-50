@@ -1,11 +1,14 @@
 install:
-	poetry install
+	uv pip install -r requirements.txt
+
+test:
+	uv run pytest
 
 build:
 	poetry build
 
 test-coverage:
-	poetry run pytest --cov=gendiff tests --cov-report xml
+	uv run pytest --cov=gendiff tests --cov-report xml
 
 package-install:
 	python3 -m pip install --user dist/*.whl
@@ -17,7 +20,7 @@ publish:
 	poetry publish --dry-run
 
 lint:
-	poetry run flake8
+	uv run flake8
 
 check:
-	poetry run pytest
+	uv run pytest
