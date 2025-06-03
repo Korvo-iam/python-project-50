@@ -1,26 +1,24 @@
 install:
-	poetry pip install -r requirements.txt
+	uv pip sync requirements.txt
 
 test:
-	poetry run pytest
+	uv run pytest
 
 build:
-	poetry build
+	uv build
 
 test-coverage:
-	poetry run pytest --cov=gendiff tests --cov-report xml
+	uv run pytest --cov=gendiff tests --cov-report xml
 
 package-install:
-	python3 -m pip install --user dist/*.whl
+	uv tool install dist/*.whl
 
 package-install-venv:
-	python3 -m pip install dist/*.whl
+	uv tool install dist/*.whl
 
 publish:
-	poetry publish --dry-run
+	uv run poetry publish --dry-run
 
 lint:
-	poetry run flake8
+	uv run ruff
 
-check:
-	poetry run pytest
