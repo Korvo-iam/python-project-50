@@ -20,5 +20,5 @@ publish:
 	uv run poetry publish --dry-run
 
 lint:
-	uv run ruff
+	uv run ruff check gendiff
 

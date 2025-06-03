@@ -1,10 +1,10 @@
 import json
+
 import yaml
 
-
-from gendiff.scripts.set_diff_status import set_status
 from gendiff.formatters.plain_convert import plain_convert
 from gendiff.formatters.stylish_convert import stylish_convert
+from gendiff.scripts.set_diff_status import set_status
 
 
 def open_file(curfile):

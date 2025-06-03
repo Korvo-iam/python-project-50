@@ -1,4 +1,4 @@
-from .format_value import format_value, check_if_dic
+from .format_value import check_if_dic, format_value
 
 
 def stylish_convert(dict_inside, tab='  '):
