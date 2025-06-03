@@ -1,5 +1,5 @@
 install:
-	uv pip sync requirements.txt
+	uv sync
 
 test:
 	uv run pytest
