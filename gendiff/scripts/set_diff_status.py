@@ -5,33 +5,21 @@ def set_recursive(dict):
     dictionary = {}
     status = 'untouched'
     children = []
-    #print(f'789-----------------------------------------------------------------')
-    #print(dict)
     if check_if_dic(dict):
-        #print(True)
         for key in dict:
-            #print(key)
             val = dict[key]
-            #print(val)
-            #print('-**************************************************************')
             if check_if_dic(val):
-                #print('result1')
                 status = 'nested'
                 children.append(set_recursive(val))
                 value = {'status': status, 'children': children}
                 dictionary[key] = value
             else:
-                #print(key)
-                #print('case2')
-                #print('result2')
                 status = 'untouched'
                 old_value = dict[key]
                 new_value = None
                 value = {"status": status, "old_value": old_value, "new_value": new_value}
                 dictionary[key] = value
-    #print(f'children:{children}')
     children = []
-    #print(f'dictionary : {dictionary}')
     return dictionary
 
 
@@ -67,11 +55,8 @@ def set_status(dic1, dic2, deepnees=0):
                         children.append(set_recursive(dic1[key]))
                         old_value = {'status': status, 'children': children}
                     elif check_if_dic(dic2[key]):
-                        #print(key)
-                        #print(dic2[key])
                         status = 'untouched_dic'
                         children.append(set_recursive(dic2[key]))
-                        #print(children)
                         new_value = {'status': status, 'children': children}
                     status = 'changed'
                     value = {"status": status, "old_value": old_value, "new_value": new_value}
@@ -112,5 +97,4 @@ def set_status(dic1, dic2, deepnees=0):
                     new_value = None
                 value = {"status": status, "old_value": old_value, "new_value": new_value}
                 dictionary[key] = value
-    print(dictionary)
     return dictionary
