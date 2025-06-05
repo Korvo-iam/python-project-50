@@ -22,8 +22,6 @@ def open_file(curfile):
 
 def generate_diff(first, second, format_name='stylish'):
     diff = {}
-    print(first)
-    print(second)
     if first is dict:
         file1 = first
     else:
@@ -32,7 +30,10 @@ def generate_diff(first, second, format_name='stylish'):
         file2 = second
     else:
         file2 = open_file(second)
+    print(file1)
+    print(file2)
     diff = set_status(file1, file2)
+    print(diff)
     diff_inside = diff['root']
     fin_string = ''
     if format_name == 'plain':
