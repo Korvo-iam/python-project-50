@@ -4,7 +4,7 @@ from .format_value import check_if_dic, format_value
 def plain_convert(dict_inside, path=''):
     def set_apostrophes(element):
         four_horsemen = ['true', 'false', 'null', '[complex value]']
-        if element in four_horsemen:
+        if element in four_horsemen or type(element) is int:
             element = element
         else:
             element = "'" + str(element) + "'"
