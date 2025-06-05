@@ -81,7 +81,7 @@ def test_generate_diff_6():
 
 
 def test_generate_diff_7():
-    difference = generate_diff(file9, file10)
+    difference = generate_diff(file7, file8)
     expected = '''{
     common: {
       + follow: false
@@ -153,7 +153,7 @@ def test_generate_diff_9():
 
 
 def test_generate_diff_10():
-    difference = generate_diff(file7, file8)
+    difference = generate_diff(file9, file10)
     expected ='''{
     common: {
       + follow: false

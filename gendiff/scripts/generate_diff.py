@@ -31,7 +31,9 @@ def generate_diff(first, second, format_name='stylish'):
     else:
         file2 = open_file(second)
     print(f'file1 : {file1}')
+    print(f'first : {first}')
     print(f'file2 : {file2}')
+    print(f'second : {second}')
     diff = set_status(file1, file2)
     diff_inside = diff['root']
     fin_string = ''
