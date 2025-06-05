@@ -22,6 +22,8 @@ def open_file(curfile):
 
 def generate_diff(first, second, format_name='stylish'):
     diff = {}
+    print(first)
+    print(second)
     if first is dict:
         file1 = first
     else:
