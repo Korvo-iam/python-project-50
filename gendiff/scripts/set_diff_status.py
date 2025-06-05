@@ -21,8 +21,8 @@ def set_recursive(dict):
                 value = {'status': status, 'children': children}
                 dictionary[key] = value
             else:
-                print(key)
-                print('case2')
+                #print(key)
+                #print('case2')
                 #print('result2')
                 status = 'untouched'
                 old_value = dict[key]
@@ -112,4 +112,5 @@ def set_status(dic1, dic2, deepnees=0):
                     new_value = None
                 value = {"status": status, "old_value": old_value, "new_value": new_value}
                 dictionary[key] = value
+    print(dictionary)
     return dictionary
