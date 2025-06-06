@@ -1,4 +1,4 @@
-from gendiff.scripts.generate_diff import generate as generate_diff
+from gendiff.scripts.generate_diff import generate
 import json
 
 file1 = 'tests/test_data/file1.json'
@@ -14,7 +14,7 @@ file10 = 'tests/test_data/file10.yaml'
 
 
 def test_generate_diff_1():
-    difference = generate_diff(file1, file1)
+    difference = generate(file1, file1)
     expected = '''{
     follow: false
     host: hexlet.io
@@ -25,7 +25,7 @@ def test_generate_diff_1():
 
 
 def test_generate_diff_2():
-    difference = generate_diff(file1, file2)
+    difference = generate(file1, file2)
     expected = '''{
   - follow: false
     host: hexlet.io
@@ -38,7 +38,7 @@ def test_generate_diff_2():
 
 
 def test_generate_diff_3():
-    difference = generate_diff(file1, file3)
+    difference = generate(file1, file3)
     expected = '''{
   - follow: false
     host: hexlet.io
@@ -49,7 +49,7 @@ def test_generate_diff_3():
 
 
 def test_generate_diff_4():
-    difference = generate_diff(file1, file4)
+    difference = generate(file1, file4)
     expected = '''{
   - follow: false
   - host: hexlet.io
@@ -60,7 +60,7 @@ def test_generate_diff_4():
 
 
 def test_generate_diff_5():
-    difference = generate_diff(file3, file5)
+    difference = generate(file3, file5)
     expected = '''{
     host: hexlet.io
     proxy: 123.234.53.22
@@ -70,7 +70,7 @@ def test_generate_diff_5():
 
 
 def test_generate_diff_6():
-    difference = generate_diff(file1, file6)
+    difference = generate(file1, file6)
     expected = '''{
   - follow: false
   - host: hexlet.io
@@ -81,7 +81,7 @@ def test_generate_diff_6():
 
 
 def test_generate_diff_7():
-    difference = generate_diff(file7, file8)
+    difference = generate(file7, file8)
     expected = '''{
     common: {
       + follow: false
@@ -130,7 +130,7 @@ def test_generate_diff_7():
 
 
 def test_generate_diff_8():
-    difference = generate_diff(file7, file8, 'plain')
+    difference = generate(file7, file8, 'plain')
     expected = '''Property 'common.follow' was added with value: false
 Property 'common.setting2' was removed
 Property 'common.setting3' was updated. From true to null
@@ -146,14 +146,14 @@ Property 'group3' was added with value: [complex value]'''
 
 
 def test_generate_diff_9():
-    difference = generate_diff(file7, file8, 'json')
+    difference = generate(file7, file8, 'json')
     example_dic = {"status": "root", "children": [{'common': {'status': 'nested', 'children': [{'follow': {'status': 'added', 'old_value': None, 'new_value': False}, 'setting1': {'status': 'untouched', 'old_value': 'Value 1', 'new_value': None}, 'setting2': {'status': 'removed', 'old_value': 200, 'new_value': None}, 'setting3': {'status': 'changed', 'old_value': True, 'new_value': None}, 'setting4': {'status': 'added', 'old_value': None, 'new_value': 'blah blah'}, 'setting5': {'status': 'added_dic', 'children': [{'key5': {'status': 'untouched', 'old_value': 'value5', 'new_value': None}}]}, 'setting6': {'status': 'nested', 'children': [{'doge': {'status': 'nested', 'children': [{'wow': {'status': 'changed', 'old_value': '', 'new_value': 'so much'}}]}, 'key': {'status': 'untouched', 'old_value': 'value', 'new_value': None}, 'ops': {'status': 'added', 'old_value': None, 'new_value': 'vops'}}]}}]}, 'group1': {'status': 'nested', 'children': [{'baz': {'status': 'changed', 'old_value': 'bas', 'new_value': 'bars'}, 'foo': {'status': 'untouched', 'old_value': 'bar', 'new_value': None}, 'nest': {'status': 'changed', 'old_value': {'status': 'untouched_dic', 'children': [{'key': {'status': 'untouched', 'old_value': 'value', 'new_value': None}}]}, 'new_value': 'str'}}]}, 'group2': {'status': 'removed_dic', 'children': [{'abc': {'status': 'untouched', 'old_value': 12345, 'new_value': None}, 'deep': {'status': 'nested', 'children': [{'id': {'status': 'untouched', 'old_value': 45, 'new_value': None}}]}}]}, 'group3': {'status': 'added_dic', 'children': [{'deep': {'status': 'nested', 'children': [{'id': {'status': 'nested', 'children': [{'number': {'status': 'untouched', 'old_value': 45, 'new_value': None}}]}}]}, 'fee': {'status': 'untouched', 'old_value': 100500, 'new_value': None}}]}}]}
     expected = str(json.dumps(example_dic, indent=4))
     assert difference == expected
 
 
 def test_generate_diff_10():
-    difference = generate_diff(file9, file10)
+    difference = generate(file9, file10)
     expected ='''{
     common: {
       + follow: false
