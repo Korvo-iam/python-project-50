@@ -10,7 +10,10 @@ dependencies = [
 ]
 
 [tool.poetry.scripts]
-gendiff = "gendiff.scripts.gendiff_script:main"
+gendiff = "gendiff.scripts.generate_diff:main"
+
+[project.scripts]
+gendiff = "gendiff.scripts.generate_diff:main"
 
 [build-system]
 requires = ["hatchling"]
@@ -25,5 +28,3 @@ dev = [
     "ruff>=0.11.8",
 ]
 
-[project.scripts]
-gendiff = "gendiff.scripts.gendiff:main"
