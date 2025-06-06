@@ -7,4 +7,6 @@ line-length = 80
 [lint]
 preview = true
 select = ["E", "F", "I", "C90"]
-ignore = ["C901"]
+
+[lint.mccabe]
+max-complexity = 20
