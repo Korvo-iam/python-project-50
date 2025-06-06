@@ -2,8 +2,8 @@ import json
 
 import yaml
 
-from gendiff.formatters.plain_convert import plain_convert
-from gendiff.formatters.stylish_convert import stylish_convert
+from gendiff.formatters.plain_convert import p_convert
+from gendiff.formatters.stylish_convert import s_convert
 from gendiff.scripts.set_diff_status import set_status
 
 
@@ -35,11 +35,11 @@ def generate(first, second, format_name='stylish'):
     fin_string = ''
     if format_name == 'plain':
         fin_string = ''
-        fin_string += plain_convert(diff_inside)
+        fin_string += p_convert(diff_inside)
         fin_string = fin_string[:-1]
     elif format_name == 'stylish':
         fin_string = '{\n'
-        fin_string += stylish_convert(diff_inside) + '}'
+        fin_string += s_convert(diff_inside) + '}'
     elif format_name == 'json':
         fin_string = str(json.dumps(diff_inside, indent=4))
     return fin_string

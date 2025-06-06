@@ -17,7 +17,9 @@ def transform_var_json(element):
     element = format_value(element)
     if isinstance(element, str):
         if len(element) > 0:
-            if element.endswith('"') and element.startswith('"') or element.endswith("'") and element.startswith("'") or element in four_horseman:
+            if (element.endswith('"') and element.startswith('"') 
+                or element.endswith("'") and element.startswith("'") 
+                or element in four_horseman):
                 element = element    
             else:
                 element = f'"{element}"'
