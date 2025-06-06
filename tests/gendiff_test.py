@@ -1,4 +1,4 @@
-from gendiff.scripts.generate_diff import generate_diff
+from gendiff.scripts.generate_diff import generate
 import json
 
 file1 = 'tests/test_data/file1.json'

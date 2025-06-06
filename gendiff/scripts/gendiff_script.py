@@ -1,6 +1,6 @@
 import argparse
 
-from generate_diff import generate_diff as g_f
+from generate_diff import generate as g_f
 
 
 def main():

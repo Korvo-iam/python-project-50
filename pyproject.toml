@@ -9,6 +9,9 @@ dependencies = [
     "pyyaml>=6.0.2",
 ]
 
+[tool.poetry.scripts]
+gendiff = "gendiff.scripts.gendiff_script:main"
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
