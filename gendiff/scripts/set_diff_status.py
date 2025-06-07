@@ -28,9 +28,7 @@ def set_recursive(dict):
     return dictionary
 
 
-def set_status(dic1,
-               dic2,
-               deepnees=0):  # noqa: C901
+def set_status(dic1, dic2, deepnees=0):  # noqa: C901
     list1 = sorted(list(set(list(dic1.keys()) + list(dic2.keys()))))
     dictionary = {}
     children = []
