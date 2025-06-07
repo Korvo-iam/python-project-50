@@ -1,7 +1,7 @@
 from .format_value import check_if_dic, format_value
 
 
-def s_convert(dict_inside, tab='  '):
+def s_convert(dict_inside, tab='  '):  # noqa: C901
     stroka = ''
     oper_plus = '+ '
     oper_minus = '- '
