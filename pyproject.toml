@@ -28,7 +28,7 @@ dev = [
     "ruff>=0.4.3",
 ]
 
-[tool.ruff]
+[tool.ruff.lint]
 line-length = 80
 select = ["E", "F", "I", "C90"]
 ignore = ["C901"]
