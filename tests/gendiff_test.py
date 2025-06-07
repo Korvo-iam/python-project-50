@@ -1,5 +1,6 @@
-from gendiff.scripts.generate_diff import generate
 import json
+
+from gendiff.scripts.generate_diff import generate
 
 file1 = 'tests/test_data/file1.json'
 file2 = 'tests/test_data/file2.json'
@@ -147,14 +148,181 @@ Property 'group3' was added with value: [complex value]'''
 
 def test_generate_diff_9():
     difference = generate(file7, file8, 'json')
-    example_dic = {"status": "root", "children": [{'common': {'status': 'nested', 'children': [{'follow': {'status': 'added', 'old_value': None, 'new_value': False}, 'setting1': {'status': 'untouched', 'old_value': 'Value 1', 'new_value': None}, 'setting2': {'status': 'removed', 'old_value': 200, 'new_value': None}, 'setting3': {'status': 'changed', 'old_value': True, 'new_value': None}, 'setting4': {'status': 'added', 'old_value': None, 'new_value': 'blah blah'}, 'setting5': {'status': 'added_dic', 'children': [{'key5': {'status': 'untouched', 'old_value': 'value5', 'new_value': None}}]}, 'setting6': {'status': 'nested', 'children': [{'doge': {'status': 'nested', 'children': [{'wow': {'status': 'changed', 'old_value': '', 'new_value': 'so much'}}]}, 'key': {'status': 'untouched', 'old_value': 'value', 'new_value': None}, 'ops': {'status': 'added', 'old_value': None, 'new_value': 'vops'}}]}}]}, 'group1': {'status': 'nested', 'children': [{'baz': {'status': 'changed', 'old_value': 'bas', 'new_value': 'bars'}, 'foo': {'status': 'untouched', 'old_value': 'bar', 'new_value': None}, 'nest': {'status': 'changed', 'old_value': {'status': 'untouched_dic', 'children': [{'key': {'status': 'untouched', 'old_value': 'value', 'new_value': None}}]}, 'new_value': 'str'}}]}, 'group2': {'status': 'removed_dic', 'children': [{'abc': {'status': 'untouched', 'old_value': 12345, 'new_value': None}, 'deep': {'status': 'nested', 'children': [{'id': {'status': 'untouched', 'old_value': 45, 'new_value': None}}]}}]}, 'group3': {'status': 'added_dic', 'children': [{'deep': {'status': 'nested', 'children': [{'id': {'status': 'nested', 'children': [{'number': {'status': 'untouched', 'old_value': 45, 'new_value': None}}]}}]}, 'fee': {'status': 'untouched', 'old_value': 100500, 'new_value': None}}]}}]}
+    example_dic = {
+    "status": "root",
+    "children": [
+        {
+            "common": {
+                "status": "nested",
+                "children": [
+                    {
+                        "follow": {
+                            "status": "added",
+                            "old_value": None,
+                            "new_value": False
+                        },
+                        "setting1": {
+                            "status": "untouched",
+                            "old_value": "Value 1",
+                            "new_value": None
+                        },
+                        "setting2": {
+                            "status": "removed",
+                            "old_value": 200,
+                            "new_value": None
+                        },
+                        "setting3": {
+                            "status": "changed",
+                            "old_value": True,
+                            "new_value": None
+                        },
+                        "setting4": {
+                            "status": "added",
+                            "old_value": None,
+                            "new_value": "blah blah"
+                        },
+                        "setting5": {
+                            "status": "added_dic",
+                            "children": [
+                                {
+                                    "key5": {
+                                        "status": "untouched",
+                                        "old_value": "value5",
+                                        "new_value": None
+                                    }
+                                }
+                            ]
+                        },
+                        "setting6": {
+                            "status": "nested",
+                            "children": [
+                                {
+                                    "doge": {
+                                        "status": "nested",
+                                        "children": [
+                                            {
+                                                "wow": {
+                                                    "status": "changed",
+                                                    "old_value": "",
+                                                    "new_value": "so much"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "key": {
+                                        "status": "untouched",
+                                        "old_value": "value",
+                                        "new_value": None
+                                    },
+                                    "ops": {
+                                        "status": "added",
+                                        "old_value": None,
+                                        "new_value": "vops"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "group1": {
+                "status": "nested",
+                "children": [
+                    {
+                        "baz": {
+                            "status": "changed",
+                            "old_value": "bas",
+                            "new_value": "bars"
+                        },
+                        "foo": {
+                            "status": "untouched",
+                            "old_value": "bar",
+                            "new_value": None
+                        },
+                        "nest": {
+                            "status": "changed",
+                            "old_value": {
+                                "status": "untouched_dic",
+                                "children": [
+                                    {
+                                        "key": {
+                                            "status": "untouched",
+                                            "old_value": "value",
+                                            "new_value": None
+                                        }
+                                    }
+                                ]
+                            },
+                            "new_value": "str"
+                        }
+                    }
+                ]
+            },
+            "group2": {
+                "status": "removed_dic",
+                "children": [
+                    {
+                        "abc": {
+                            "status": "untouched",
+                            "old_value": 12345,
+                            "new_value": None
+                        },
+                        "deep": {
+                            "status": "nested",
+                            "children": [
+                                {
+                                    "id": {
+                                        "status": "untouched",
+                                        "old_value": 45,
+                                        "new_value": None
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "group3": {
+                "status": "added_dic",
+                "children": [
+                    {
+                        "deep": {
+                            "status": "nested",
+                            "children": [
+                                {
+                                    "id": {
+                                        "status": "nested",
+                                        "children": [
+                                            {
+                                                "number": {
+                                                    "status": "untouched",
+                                                    "old_value": 45,
+                                                    "new_value": None
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        "fee": {
+                            "status": "untouched",
+                            "old_value": 100500,
+                            "new_value": None
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}
     expected = str(json.dumps(example_dic, indent=4))
     assert difference == expected
 
 
 def test_generate_diff_10():
     difference = generate(file9, file10)
-    expected ='''{
+    expected = '''{
     common: {
       + follow: false
         setting1: Value 1
