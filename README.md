@@ -10,9 +10,6 @@ ASCIINEMA:
 
 ## Links / Ссылки
 
-🇷🇺
-🇬🇧
-
 Project on hexlet.io / Проект на hexlet.io : https://ru.hexlet.io/projects/50/members/41516/reviews
 
 Github actions : https://github.com/Korvo-iam/python-project-50/actions
@@ -63,6 +60,7 @@ make install
 ## Usage / Использование
 
 ```bash
+python3 -m gendiff.scripts.gendiff_script tests/test_data/file1.json tests/test_data/file2.json -f stylish
 {
   - follow: false
     host: hexlet.io
@@ -74,6 +72,7 @@ make install
 ```
 
 ```bash
+python3 -m gendiff.scripts.gendiff_script tests/test_data/file1.json tests/test_data/file2.json -f plain
 Property 'follow' was removed
 Property 'proxy' was removed
 Property 'timeout' was updated. From 50 to 20
