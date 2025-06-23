@@ -11,7 +11,7 @@ test-coverage:
 	uv run pytest --cov=gendiff tests --cov-report xml
 
 package-install:
-	uv tool install dist/*.whl
+	python3 -m pip install --user dist/*.whl 
 
 package-install-venv:
 	uv tool install dist/*.whl
