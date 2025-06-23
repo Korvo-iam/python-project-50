@@ -32,14 +32,10 @@ def generate(first, second, format_name='stylish'):
         file2 = open_file(second)
     diff = set_status(file1, file2)
     diff_inside = diff['root']
-    fin_string = ''
     if format_name == 'plain':
-        fin_string = ''
-        fin_string += p_convert(diff_inside)
-        fin_string = fin_string[:-1]
+        fin_string = '' + p_convert(diff_inside)[:-1]
     elif format_name == 'stylish':
-        fin_string = '{\n'
-        fin_string += s_convert(diff_inside) + '}'
+        fin_string ='{\n' + s_convert(diff_inside) + '}'
     elif format_name == 'json':
         fin_string = str(json.dumps(diff_inside, indent=4))
     return fin_string

@@ -3,7 +3,6 @@ from ..formatters.format_value import check_if_dic
 
 def set_recursive(dict):
     dictionary = {}
-    status = 'untouched'
     children = []
     if check_if_dic(dict):
         for key in dict:

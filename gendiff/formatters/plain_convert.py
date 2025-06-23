@@ -10,7 +10,7 @@ def p_convert(dict_inside, path=''):  # noqa: C901
             element = "'" + str(element) + "'"
         return element
     stroka = ''
-    inside = ''
+    #inside = ''
     if path != '':
         dot = '.'
     else:

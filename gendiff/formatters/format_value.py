@@ -13,13 +13,13 @@ def check_if_dic(element):
 
 
 def transform_var_json(element):
-    four_horseman = ['true', 'null', 'false']
+    three_horsemen = ['true', 'null', 'false']
     element = format_value(element)
     if isinstance(element, str):
         if len(element) > 0:
             if (element.endswith('"') and element.startswith('"') 
                 or element.endswith("'") and element.startswith("'") 
-                or element in four_horseman):
+                or element in three_horsemen):
                 element = element    
             else:
                 element = f'"{element}"'
