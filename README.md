@@ -4,4 +4,4 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/cff67099e9bb24915e6a/test_coverage)](https://codeclimate.com/github/Korvo-iam/python-project-50/test_coverage)
 
 ASCIINEMA:
-[![asciicast](https://asciinema.org/a/hqb2YISF5qHuxx9ObOfZgOfgJ.svg)](https://asciinema.org/a/hqb2YISF5qHuxx9ObOfZgOfgJ)
+[![asciicast](https://asciinema.org/a/cvDIJqch1bBuMT9xSZVb6XbJe.svg)](https://asciinema.org/a/cvDIJqch1bBuMT9xSZVb6XbJe)
