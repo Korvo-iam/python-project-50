@@ -35,7 +35,7 @@ def generate(first, second, format_name='stylish'):
     if format_name == 'plain':
         fin_string = '' + p_convert(diff_inside)[:-1]
     elif format_name == 'stylish':
-        fin_string ='{\n' + s_convert(diff_inside) + '}'
+        fin_string = '{\n' + s_convert(diff_inside) + '}'
     elif format_name == 'json':
         fin_string = str(json.dumps(diff_inside, indent=4))
     return fin_string

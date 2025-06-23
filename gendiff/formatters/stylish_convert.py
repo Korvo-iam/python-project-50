@@ -6,10 +6,6 @@ def s_convert(dict_inside, tab='  '):  # noqa: C901
     oper_plus = '+ '
     oper_minus = '- '
     oper_neutral = '  '
-    #skobka2 = ''
-    #skobka1 = ''
-    #oper = ''
-    #inside = ''
     dict_inside = dict_inside['children']
     for elem in list(dict_inside):
         for key in elem:
